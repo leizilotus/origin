@@ -37,7 +37,7 @@ export default {
   data () {
     return {
       form: {
-        mobile: '15120025791',
+        mobile: '',
         code: ''
       }
     }
@@ -70,6 +70,18 @@ export default {
             captchaObj.verify()
           }).onSuccess(function () {
             console.log(captchaObj.getValidate())
+            const { geetest_challenge: challenge, geetest_validate: validate, geetest_seccode: seccode } = captchaObj.getValidate()
+            axios({
+              method: 'GET',
+              url: `http://ttapi.research.itcast.cn/mp/v1_0/sms/codes/${mobile}`,
+              params: {
+                challenge,
+                validate,
+                seccode
+              }
+            }).then(res => {
+              console.log(res.data)
+            })
           }).onError(function () {
 
           })
