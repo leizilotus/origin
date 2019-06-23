@@ -34,5 +34,8 @@
       "vue-cli-service lint",
       "git add"
     ]
+  },
+  "script": {
+  "lint": "eslint --fix --ext .js,.vue src test/unit"
   }
 }
