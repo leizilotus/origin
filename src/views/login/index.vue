@@ -26,7 +26,7 @@
     </el-form>
     </div>
   </div>
-</template>s
+</template>
 
 <script>
 import axios from 'axios'
@@ -37,7 +37,7 @@ export default {
   data () {
     return {
       form: {
-        mobile: '',
+        mobile: '15120025791',
         code: ''
       }
     }
@@ -51,9 +51,29 @@ export default {
       const { mobile } = this.form
       axios({
         method: 'GET',
-        url: `https://mock.boxuegu.com/mock/434/v1_0/captchas/${mobile}`
+        url: `http://ttapi.research.itcast.cn/mp/v1_0/captchas/${mobile}`
       }).then(res => {
-        console.log(res.data)
+        // console.log('handleSendCode')
+        const { data } = res.data
+        window.initGeetest({
+          // 以下配置参数来自服务端 SDK
+          gt: data.gt,
+          challenge: data.challenge,
+          offline: !data.success,
+          new_captcha: data.new_captcha,
+          product: 'bind'
+        }, function (captchaObj) {
+          // 这里可以调用验证实例 captchaObj 的实例方法
+          captchaObj.onReady(function () {
+          // 验证码ready之后才能调用verify方法显示验证码
+          // 弹出验证码内容框
+            captchaObj.verify()
+          }).onSuccess(function () {
+            console.log(captchaObj.getValidate())
+          }).onError(function () {
+
+          })
+        })
       })
     }
   }
