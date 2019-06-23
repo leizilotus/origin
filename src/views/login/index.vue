@@ -13,7 +13,7 @@
           <el-input v-model="form.code"  placeholder="验证码"></el-input>
         </el-col>
         <el-col :offset="2" :span="8">
-          <el-button >获取验证码</el-button>
+          <el-button @click="handleSendCode">获取验证码</el-button>
         </el-col>
       </el-form-item>
       <el-form-item>
@@ -29,6 +29,7 @@
 </template>s
 
 <script>
+import axios from 'axios'
 export default {
   name: 'AppLogin',
   data () {
@@ -42,6 +43,16 @@ export default {
   methods: {
     onSubmit () {
       console.log('submit!')
+    },
+
+    handleSendCode () {
+      const { mobile } = this.form
+      axios({
+        method: 'GET',
+        url: `https://mock.boxuegu.com/mock/434/v1_0/captchas/${mobile}`
+      }).then(res => {
+        console.log(res.data)
+      })
     }
   }
 }
