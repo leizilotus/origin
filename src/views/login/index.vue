@@ -21,7 +21,7 @@
         <span class="agree-text">我已阅读并同意<a href="#">用户协议</a>和<a href="#">隐私条款</a></span>
       </el-form-item>
       <el-form-item >
-        <el-button class="login-button" type="primary" @click="onSubmit">登录</el-button>
+        <el-button class="login-button" type="primary" @click="handleLogin">登录</el-button>
       </el-form-item>
     </el-form>
     </div>
@@ -37,14 +37,32 @@ export default {
   data () {
     return {
       form: {
-        mobile: '',
+        mobile: '15120025791',
         code: ''
       }
     }
   },
   methods: {
-    onSubmit () {
-      console.log('submit!')
+    handleLogin () {
+      // const { mobile, code } = this.form
+      axios({
+        method: 'POST',
+        url: 'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+        data: this.form
+      })
+        .then(res => {
+          console.log(res.data)
+          this.$message({
+            message: '登录成功',
+            type: 'success'
+          })
+          this.$router.push({
+            name: 'home'
+          })
+        })
+        .catch((e) => {
+          this.$message.error('登录失败，手机号或验证码错误')
+        })
     },
 
     handleSendCode () {
